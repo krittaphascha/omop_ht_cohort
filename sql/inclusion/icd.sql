@@ -9,6 +9,14 @@ p_info AS ( -- Get patients info
     FROM cdm.person p
 ),
 
+opd_visit AS (
+    SELECT  v.person_id,
+            v.visit_start_date
+    FROM [cdm].[visit_occurrence] v
+    WHERE v.visit_start_date BETWEEN '2013-06-01' AND '2023-09-30'
+   AND v.visit_concept_id = 9202 
+),
+
 diag_info AS ( -- get the first diagnosis of T2DM for each patient
     SELECT  co.person_id,
             co.condition_concept_id,
@@ -16,6 +24,7 @@ diag_info AS ( -- get the first diagnosis of T2DM for each patient
             ROW_NUMBER() OVER(PARTITION BY co.person_id ORDER BY co.condition_start_datetime) as rn
     FROM cdm.condition_occurrence co
     JOIN desc_con d ON co.condition_concept_id = d.descendant_concept_id
+    INNER JOIN opd_visit v ON co.person_id = v.person_id AND co.condition_start_datetime BETWEEN v.visit_start_date AND DATEADD(DAY, 1, v.visit_start_date)
     WHERE co.condition_start_datetime BETWEEN '2013-06-01' AND '2023-12-31'
     GROUP BY co.person_id, co.condition_concept_id, co.condition_start_datetime
 )
