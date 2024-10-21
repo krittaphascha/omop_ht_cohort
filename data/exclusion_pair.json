@@ -1,0 +1,10 @@
+{
+    "hyperthyroid": ["non_selective_bb"],
+    "af": ["non_selective_bb", "selective_bb", "alpha_bb"],
+    "hf": ["k_sparing", "loop", "acei", "arb"],
+    "cirrhosis": ["k_sparing"],
+    "hf": ["loop"],
+    "bph": ["alpha"],
+    "pregnancy_hypertension": ["alpha_agonist"],
+    "arrhythmia": ["non_dhpCCB"]
+}
