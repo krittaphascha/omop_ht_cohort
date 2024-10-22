@@ -6,9 +6,7 @@ WITH desc_con AS ( -- All descendants of the 320128 Essential Hypertension SNOME
 p_info AS ( -- Get patients info
     SELECT p.person_id, YEAR(m.birth_date) as year_of_birth
     FROM dbo.m_patient_info1 m
-    LEFT JOIN omop.map__person p ON m.hn = p.hn
-    -- SELECT p.person_id, p.year_of_birth
-    -- FROM omop.person p
+    LEFT JOIN omop.map__person p ON m.hn = p.hn --use patient_info from source data instead
 ),
 opd_visit AS (
     SELECT  v.person_id,
@@ -158,11 +156,10 @@ FROM diag_list dl JOIN drug_list dr ON dl.person_id = dr.person_id
         FROM inclusion i 
         LEFT JOIN exclusion e ON i.person_id = e.person_id
         )
-        SELECT *
-        INTO omop_datareq.cohort_ht_v2
-        FROM summary
-        WHERE NOT (criteria = 'drug' AND total_exclusion > 0)        
-        AND age_at_index >= 18
+SELECT *
+FROM summary
+WHERE NOT (criteria = 'drug' AND total_exclusion > 0)        
+AND age_at_index >= 18
 
 
 
