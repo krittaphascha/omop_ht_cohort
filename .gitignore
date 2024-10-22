@@ -1,3 +1,4 @@
 .env
 .conda
-data
+notebook
+internal
